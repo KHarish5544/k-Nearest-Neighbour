@@ -1,0 +1,36 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+# Load dataset
+dataset = pd.read_csv('head.csv')
+# Extracting features and target variable
+X = dataset.iloc[:, [1, 2]].values
+y = dataset.iloc[:, -1].values
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=0)
+# Initialize k-NN classifier
+k = 3  # You can adjust the value of k
+knn = KNeighborsClassifier(n_neighbors=k)
+# Train the classifier
+knn.fit(X_train, y_train)
+# Predict classes for the test set
+y_pred = knn.predict(X_test)
+# Compute accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy}")
+
+# Print correct and wrong predictions
+correct_predictions = 0
+wrong_predictions = 0
+for i in range(len(y_test)):
+    if y_test[i] == y_pred[i]:
+        print(f"Correct prediction: Predicted {y_pred[i]}, Actual {y_test[i]}")
+        correct_predictions += 1
+    else:
+        print(f"Wrong prediction: Predicted {y_pred[i]}, Actual {y_test[i]}")
+        wrong_predictions += 1
+print(f"\nTotal correct predictions: {correct_predictions}")
+print(f"Total wrong predictions: {wrong_predictions}")
